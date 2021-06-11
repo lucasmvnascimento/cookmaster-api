@@ -67,6 +67,8 @@ Neste projeto, você será capaz de:
 
 - Consultar arquivos do servidor através de uma api REST.
 
+- Realizar testes de integração
+
 ---
 
 # Entregáveis
