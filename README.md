@@ -222,7 +222,7 @@ Deverá ser possível adicionar uma imagem à uma receita, utilizando o upload d
 
 ---
 
-Há dois arquivos em `./src/api/` no repositório: `server.js` e `app.js`, ambos não devem ser renomeados ou apagados. 
+Há dois arquivos em `./src/api/` no repositório: `server.js` e `app.js`, **ambos não devem ser renomeados ou apagados**. 
 
 Em `app.js` o seguinte trecho de código não deve ser removido:
 
