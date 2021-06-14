@@ -21,6 +21,7 @@ app.post('/login', usersController.login);
 
 app.post('/recipes', recipesController.createRecipe);
 app.get('/recipes', recipesController.getAllRecipes);
+app.get('/recipes/:id', recipesController.getRecipeById);
 
 app.use(Middlewares.error);
 
