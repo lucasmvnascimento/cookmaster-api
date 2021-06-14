@@ -8,7 +8,6 @@ const createUser = async ({ name, email, password }) => {
     _id: insertedId,
     name,
     email,
-    password,
     role: 'user',
   };
 };
