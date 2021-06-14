@@ -39,7 +39,7 @@ const login = async ({ email, password }) => {
     error: 401,
     message: 'Incorrect username or password'
   };
-  const token = jwt.sign({ data: email }, secret, jwtConfig);
+  const token = jwt.sign({ data: user }, secret, jwtConfig);
   return {
     token
   };
