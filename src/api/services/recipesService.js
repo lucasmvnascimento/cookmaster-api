@@ -1,5 +1,7 @@
 const recipesModel = require('../models/recipesModel');
 
+const ZERO = 0;
+
 const createRecipe = async ({ name, ingredients, preparation, userId }) => {
   const newRecipe = recipesModel
     .createRecipe({ name, ingredients, preparation, userId });
@@ -31,8 +33,21 @@ const getRecipeById = async (id) => {
   }
 };
 
+const editRecipe = async (id, recipeInfo, userId) => {
+  const newRecipe = await recipesModel.editRecipe(id, recipeInfo, userId);
+  return newRecipe;
+};
+
+const deleteRecipe = async (id) => {
+  const result = await recipesModel.deleteRecipe(id);
+  if(result.deletedCount == ZERO) return false;
+  return true;
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
+  editRecipe,
+  deleteRecipe,
 };

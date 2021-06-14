@@ -22,6 +22,9 @@ app.post('/login', usersController.login);
 app.post('/recipes', recipesController.createRecipe);
 app.get('/recipes', recipesController.getAllRecipes);
 app.get('/recipes/:id', recipesController.getRecipeById);
+app.put('/recipes/:id', recipesController.editRecipe);
+app.delete('/recipes/:id', recipesController.deleteRecipe);
+
 
 app.use(Middlewares.error);
 

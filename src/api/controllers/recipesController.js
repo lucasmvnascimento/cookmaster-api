@@ -6,6 +6,7 @@ const secret = 'trybe';
 
 const CREATED_STATUS = 201;
 const OK_STATUS = 200;
+const NO_CONTENT_STATUS = 204;
 
 const createRecipe = async (req, res, next) => {
   const schema = Joi.object({
@@ -49,8 +50,56 @@ const getRecipeById = async (req, res, next) => {
   return next();
 };
 
+const editRecipe = async (req, res, next) => {
+  const recipeInfo = req.body;
+  const { id } = req.params;
+  const token = req.headers['authorization'];
+  if (!token) return next({
+    error: 401,
+    message: 'missing auth token'
+  });
+  try {
+    const decoded = jwt.verify(token, secret);
+    const userId = decoded.data['_id'];
+    const result = await recipesService.editRecipe(id, recipeInfo, userId);
+    res.status(OK_STATUS).json(result);
+    next();
+  } catch (err) {
+    return next({
+      error: 401,
+      message: err.message,
+    });
+  }
+};
+
+const deleteRecipe = async (req, res, next) => {
+  const { id } = req.params;
+  const token = req.headers['authorization'];
+  if (!token) return next({
+    error: 401,
+    message: 'missing auth token'
+  });
+  try {
+    const decode = jwt.verify(token, secret);
+    const deleted = await recipesService.deleteRecipe(id);
+    if (!deleted) next({
+      error: 401,
+      message: 'recipe not found',
+    });
+    res.status(NO_CONTENT_STATUS).send();
+    next();
+  } catch (err) {
+    return next({
+      error: 401,
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
+  editRecipe,
+  deleteRecipe,
 };
