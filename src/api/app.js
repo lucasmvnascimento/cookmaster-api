@@ -33,14 +33,14 @@ app.post('/users', usersController.createUser);
 
 app.post('/login', usersController.login);
 
-app.post('/recipes', recipesController.createRecipe);
+app.post('/recipes', Middlewares.validateJWT ,recipesController.createRecipe);
 app.get('/recipes', recipesController.getAllRecipes);
 app.get('/recipes/:id', recipesController.getRecipeById);
-app.put('/recipes/:id', recipesController.editRecipe);
-app.delete('/recipes/:id', recipesController.deleteRecipe);
+app.put('/recipes/:id', Middlewares.validateJWT,recipesController.editRecipe);
+app.delete('/recipes/:id', Middlewares.validateJWT,recipesController.deleteRecipe);
 
-app.post('/recipes/:id/image', upload.single('image'));
-
+app.put('/recipes/:id/image',upload.single('image'),
+  Middlewares.validateJWT, recipesController.addRecipeImage);
 
 app.use(Middlewares.error);
 

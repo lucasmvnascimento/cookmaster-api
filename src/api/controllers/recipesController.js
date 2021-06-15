@@ -2,8 +2,6 @@ const recipesService = require('../services/recipesService');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
-const secret = 'trybe';
-
 const CREATED_STATUS = 201;
 const OK_STATUS = 200;
 const NO_CONTENT_STATUS = 204;
@@ -17,24 +15,11 @@ const createRecipe = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
   const { error } = schema.validate({ name, ingredients, preparation });
   if(error) return next(error);
-  const token = req.headers['authorization'];
-  if (!token) return next({
-    error: 401,
-    message: 'Token não encontrado'
-  });
-  try {
-    const decoded = jwt.verify(token, secret);
-    const user = decoded.data;
-    const newRecipe = await recipesService
-      .createRecipe({ name, ingredients, preparation, userId: user['_id'] });
-    res.status(CREATED_STATUS).json({ recipe: newRecipe });
-    return next();
-  } catch (err) {
-    return next({
-      error: 401,
-      message: err.message,
-    });
-  }
+  const user = req.user;
+  const newRecipe = await recipesService
+    .createRecipe({ name, ingredients, preparation, userId: user['_id'] });
+  res.status(CREATED_STATUS).json({ recipe: newRecipe });
+  return next();
 };
 
 const getAllRecipes = async (req, res, next) => {
@@ -53,47 +38,33 @@ const getRecipeById = async (req, res, next) => {
 const editRecipe = async (req, res, next) => {
   const recipeInfo = req.body;
   const { id } = req.params;
-  const token = req.headers['authorization'];
-  if (!token) return next({
-    error: 401,
-    message: 'missing auth token'
-  });
-  try {
-    const decoded = jwt.verify(token, secret);
-    const userId = decoded.data['_id'];
-    const result = await recipesService.editRecipe(id, recipeInfo, userId);
-    res.status(OK_STATUS).json(result);
-    next();
-  } catch (err) {
-    return next({
-      error: 401,
-      message: err.message,
-    });
-  }
+  const user = req.user;
+  const userId = user['_id'];
+  const result = await recipesService.editRecipe(id, recipeInfo, userId);
+  res.status(OK_STATUS).json(result);
+  next();
 };
 
 const deleteRecipe = async (req, res, next) => {
   const { id } = req.params;
-  const token = req.headers['authorization'];
-  if (!token) return next({
+  const deleted = await recipesService.deleteRecipe(id);
+  if (!deleted) next({
     error: 401,
-    message: 'missing auth token'
+    message: 'recipe not found',
   });
-  try {
-    const decode = jwt.verify(token, secret);
-    const deleted = await recipesService.deleteRecipe(id);
-    if (!deleted) next({
-      error: 401,
-      message: 'recipe not found',
-    });
-    res.status(NO_CONTENT_STATUS).send();
-    next();
-  } catch (err) {
-    return next({
-      error: 401,
-      message: err.message,
-    });
-  }
+  res.status(NO_CONTENT_STATUS).send();
+  next();
+};
+
+const addRecipeImage = async (req, res, next) => {
+  const { id } = req.params;
+  const user = req.user;
+  const recipe = await recipesService.getRecipeById(id);
+  if (recipe.error) return next(recipe);
+  recipe.userId = user['_id'];
+  recipe.image = `localhost:3000/src/uploads/${id}.jpeg`;
+  res.status(OK_STATUS).json(recipe);
+  next();
 };
 
 module.exports = {
@@ -102,4 +73,5 @@ module.exports = {
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addRecipeImage,
 };
