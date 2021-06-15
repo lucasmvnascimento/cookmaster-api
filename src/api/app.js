@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const Middlewares = require('./middlewares');
 const multer = require('multer');
 const path = require('path');
+const jwt = require('jsonwebtoken');
+
+const secret = 'trybe';
 
 const usersController = require('./controllers/usersController');
 const recipesController = require('./controllers/recipesController');
@@ -14,7 +17,17 @@ app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 const storage = multer.diskStorage({
-  destination: (req, file, callback) => callback(null, 'src/uploads'),
+  destination: (req, file, callback) => {
+    const token = req.headers['authorization'];
+    if (!token) callback({ error: 401, message: 'missing auth token' });
+    try {
+      const decoded = jwt.verify(token, secret);
+      req.user = decoded.data;
+      callback(null, 'src/uploads');
+    } catch (err) {
+      callback({ error: 401, message: err.message }); 
+    }
+  },
   filename: (req, file, callback) => {
     const { id } = req.params;
     callback(null, id + '.jpeg');
@@ -40,7 +53,7 @@ app.put('/recipes/:id', Middlewares.validateJWT,recipesController.editRecipe);
 app.delete('/recipes/:id', Middlewares.validateJWT,recipesController.deleteRecipe);
 
 app.put('/recipes/:id/image',upload.single('image'),
-  Middlewares.validateJWT, recipesController.addRecipeImage);
+  recipesController.addRecipeImage);
 
 app.use(Middlewares.error);
 
