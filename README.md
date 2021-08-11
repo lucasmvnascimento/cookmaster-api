@@ -34,8 +34,8 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
 
 ## Endpoints Disponíveis
 
-- /users (cadastro de usuário)
-  - Método POST
+- /users
+  - Método POST (cadastro de usuário)
     - Formato da requisição
     ```json
       {
@@ -46,8 +46,8 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
      ```
      
      
-- /login (autenticação de usuário)
-  - Método POST
+- /login
+  - Método POST (autenticação de usuário)
     - Formato da requisição
     ```json
       {
@@ -56,8 +56,8 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
       }
      ```
      
-- /recipes (cadastro de receita)
-  - Método POST
+- /recipes 
+  - Método POST (cadastro de receita)
     - Formato da requisição
     ```json
       {
@@ -66,6 +66,20 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
         "preparation": "string"
       }
      ```
+  - Método GET (listagem de todas as receitas)
+
+- /recipes:id 
+  - Método GET (acessar receita específica)
+  - Método PUT (edição de receita)
+    - Formato da requisição
+    ```json
+      {
+        "name": "string",
+        "ingredients": "string",
+        "preparation": "string"
+      }
+     ```
+  - Método DELETE (remover receita)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
