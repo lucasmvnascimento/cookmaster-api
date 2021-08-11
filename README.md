@@ -32,6 +32,19 @@ Esta aplicação foi desenvolvida através do padrão REST, utilizando arquitetu
 
 OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações de conexão podem ser alteradas no arquivo `/src/api/models/connection.js`.
 
+## Endpoints Disponíveis
+
+- /users (cadastro de usuário)
+-- método POST
+--- Formato da requisição
+---- ```json
+  {
+    "name": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Termos e acordos
