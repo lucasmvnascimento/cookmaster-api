@@ -55,6 +55,17 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
         "password": "string"
       }
      ```
+     
+- /recipes (cadastro de receita)
+  - Método POST
+    - Formato da requisição
+    ```json
+      {
+        "name": "string",
+        "ingredients": "string",
+        "preparation": "string"
+      }
+     ```
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
