@@ -40,8 +40,19 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
     ```json
       {
         "name": "string",
-         "email": "string",
-          "password": "string"
+        "email": "string",
+        "password": "string"
+      }
+     ```
+     
+     
+- /login (autenticação de usuário)
+  - Método POST
+    - Formato da requisição
+    ```json
+      {
+        "email": "string",
+        "password": "string"
       }
      ```
 
