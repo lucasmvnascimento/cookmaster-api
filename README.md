@@ -35,15 +35,15 @@ OBS - Necessário MongoDB instalado para gerenciamento do banco. Configurações
 ## Endpoints Disponíveis
 
 - /users (cadastro de usuário)
--- método POST
---- Formato da requisição
----- ```json
-  {
-    "name": "string",
-    "email": "string",
-    "password": "string"
-  }
-  ```
+  - Método POST
+    - Formato da requisição
+    ```json
+      {
+        "name": "string",
+         "email": "string",
+          "password": "string"
+      }
+     ```
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
